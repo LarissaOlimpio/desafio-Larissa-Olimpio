@@ -37,7 +37,7 @@ OUTRAS REGRAS:  </br>
 
 
 ## Como Utilizar
-1. Faça o clone do repositório para o seu computador.
+1. Faça o Download do projeto ou faça o clone do repositório para o seu computadorc com o comando: git clone `https://github.com/LarissaOlimpio/desafio-Larissa-Olimpio.git`
 2. Acesse a pasta do projeto através do terminal ou prompt de comando.
 3. Instale o node `https://nodejs.org/en`
 4. Instale as dependências do projeto com o comando: npm install ou yarn install.
