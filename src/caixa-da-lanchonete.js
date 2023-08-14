@@ -11,8 +11,7 @@ class CaixaDaLanchonete {
       combo2: { descricao: "1 Café e 1 Sanduíche", valor: 7.5 },
     };
   }
- 
-  testaItensExtra(itens = []) {
+  verificaItensExtraSemPrincipal(itens = []) {
     const codigoItem = itens.map((item) => item.split(",")[0]);
     const temCafe = codigoItem.includes("cafe");
     const temSanduiche = codigoItem.includes("sanduiche");
@@ -23,7 +22,17 @@ class CaixaDaLanchonete {
     );
   }
 
+  aplicaDesconto(valorTotal) {   // Desconto de 5% para pagamento em dinheiro
+    let desconto = 0.05 * valorTotal;
+    return (valorTotal = valorTotal - desconto);
+  }
+ 
+  aplicaAcrescimo(valorTotal) {  //Acréscimo de 3% para pagamento a crédito
+    let acrescimo = 0.03 * valorTotal;
+    return (valorTotal = acrescimo + valorTotal);
+  }
   calcularValorDaCompra(metodoDePagamento, itens) {
+    
     let valorTotal = 0;
 
     const itensLowerCase = [];
@@ -35,7 +44,7 @@ class CaixaDaLanchonete {
         itensLowerCase.push(itens[i].toLowerCase());
       }
 
-      if (!this.testaItensExtra(itens)) {
+      if (!this.verificaItensExtraSemPrincipal(itens)) {
         return "Item extra não pode ser pedido sem o principal";
       }
 
@@ -69,11 +78,9 @@ class CaixaDaLanchonete {
       if (metodoDePagamento === "debito") {
         valorTotal = valorTotal;
       } else if (metodoDePagamento === "dinheiro") {
-        let desconto = 0.05 * valorTotal;
-        valorTotal = valorTotal - desconto; // Desconto de 5% para pagamento em dinheiro
+        valorTotal = this.aplicaDesconto(valorTotal);
       } else if (metodoDePagamento === "credito") {
-        let acrescimo = 0.03 * valorTotal;
-        valorTotal = acrescimo + valorTotal; // Acréscimo de 3% para pagamento a crédito
+        valorTotal = this.aplicaAcrescimo(valorTotal);
       } else {
         return "Forma de pagamento inválida!";
       }
