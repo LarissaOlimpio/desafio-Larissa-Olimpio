@@ -10,18 +10,23 @@ class CaixaDaLanchonete {
       combo1: { descricao: "1 Suco e 1 Sanduíche", valor: 9.5 },
       combo2: { descricao: "1 Café e 1 Sanduíche", valor: 7.5 },
     };
-    this.extras = {
-      Chantily:"Café",
-      Queijo: "Sanduiche"
-    }
   }
+ 
+  testaItensExtra(itens = []) {
+    const codigoItem = itens.map((item) => item.split(",")[0]);
+    const temCafe = codigoItem.includes("cafe");
+    const temSanduiche = codigoItem.includes("sanduiche");
 
+    return (
+      !(codigoItem.includes("chantily") && !temCafe) &&
+      !(codigoItem.includes("queijo") && !temSanduiche)
+    );
+  }
 
   calcularValorDaCompra(metodoDePagamento, itens) {
     let valorTotal = 0;
 
     const itensLowerCase = [];
-
 
     if (!itens || itens.length == 0 || itens == "") {
       return "Não há itens no carrinho de compra!";
@@ -29,16 +34,11 @@ class CaixaDaLanchonete {
       for (let i = 0; i < itens.length; i++) {
         itensLowerCase.push(itens[i].toLowerCase());
       }
-     
 
-      for (const extra in this.extras) {
-        const principal = this.extras[extra];
-        if (itens.includes(extra) && (!(itens.includes(principal)))) {
-          return "Item extra não pode ser pedido sem o principal";
-        }
+      if (!this.testaItensExtra(itens)) {
+        return "Item extra não pode ser pedido sem o principal";
       }
-   
-    
+
       const quantidadePorItem = {};
       itensLowerCase.forEach((item) => {
         const partes = item.split(",");
@@ -54,8 +54,7 @@ class CaixaDaLanchonete {
 
       for (const item in quantidadePorItem) {
         if (quantidadePorItem[item] === 0) {
-          return("Quantidade inválida!");
-          
+          return "Quantidade inválida!";
         }
 
         if (this.tabelaItens.hasOwnProperty(item)) {
@@ -79,9 +78,9 @@ class CaixaDaLanchonete {
         return "Forma de pagamento inválida!";
       }
 
-      valorTotal = `R$ ${valorTotal.toFixed(2).toString().replace(".", ",")}`
+      valorTotal = `R$ ${valorTotal.toFixed(2).toString().replace(".", ",")}`;
 
-      return valorTotal
+      return valorTotal;
     }
   }
 }
